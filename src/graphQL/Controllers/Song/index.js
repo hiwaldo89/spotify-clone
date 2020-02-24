@@ -4,7 +4,13 @@ const { UserInputError } = require("apollo-server");
 const getSong = async (parent, args, context, info) => {
   try {
     const { songId } = args;
-  } catch (error) {}
+    const song = await mongoose.model("song").findById(songId);
+    return song;
+  } catch (error) {
+    throw new UserInputError("Error retrieving song", {
+      invalidArgs: Object.keys(args)
+    });
+  }
 };
 
 const addSong = async (parent, args, context, info) => {
@@ -26,7 +32,26 @@ const addSong = async (parent, args, context, info) => {
   }
 };
 
+const removeSong = async (parent, args, context, info) => {
+  try {
+    const { songId } = args;
+    const deletedSong = await mongoose.model("song").findByIdAndDelete(songId);
+    deletedSong.album.forEach(albumId => {
+      mongoose.model("album").findById(albumId, function(err, doc) {
+        doc.songs.pull({ _id: songId });
+        doc.save();
+      });
+    });
+    return deletedSong;
+  } catch (error) {
+    throw new UserInputError("Error while deleting song", {
+      invalidArgs: Object.keys(args)
+    });
+  }
+};
+
 module.exports = {
   getSong,
-  addSong
+  addSong,
+  removeSong
 };

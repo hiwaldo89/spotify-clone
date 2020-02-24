@@ -1,14 +1,19 @@
-const { addArtist } = require("./Controllers/Artist");
-const { addAlbum } = require("./Controllers/Album");
-const { getSong, addSong } = require("./Controllers/Song");
+const { getArtist, addArtist, removeArtist } = require("./Controllers/Artist");
+const { getAlbum, addAlbum, removeAlbum } = require("./Controllers/Album");
+const { getSong, addSong, removeSong } = require("./Controllers/Song");
 const resolvers = {
   Query: {
+    getArtist,
+    getAlbum,
     getSong
   },
   Mutation: {
     addArtist,
     addAlbum,
-    addSong
+    addSong,
+    removeArtist,
+    removeAlbum,
+    removeSong
   }
 };
 

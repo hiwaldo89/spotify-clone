@@ -47,6 +47,8 @@ const typeDefs = gql`
   }
 
   type Query {
+    getArtist(artistId: ID): Artist
+    getAlbum(albumId: ID): Album
     getSong(songId: ID): Song
   }
 
@@ -54,6 +56,9 @@ const typeDefs = gql`
     addArtist(artistData: ArtistInput): Artist
     addAlbum(albumData: AlbumInput): Album
     addSong(songData: SongInput): Song
+    removeArtist(artistId: ID): Artist
+    removeSong(songId: ID): Song
+    removeAlbum(albumId: ID): Album
   }
 `;
 
